@@ -16,14 +16,14 @@ def calculate_path_length(base_url, path):
 
 
 if __name__ == "__main__":
-    base_url = 'http://127.0.0.1:5000'  # Adjust if your Flask app is running on a different URL/port
+    base_url = 'http://127.0.0.1:5000'
     grid_size = {"rows": 5, "columns": 5}
     path = [[0, 0], [1, 1], [2, 2]]
 
-    # Set grid size
+    # set grid size
     grid_response = set_grid(base_url, grid_size)
     print("Grid Response:", grid_response)
 
-    # Calculate path length
+    # calculate path length
     path_length_response = calculate_path_length(base_url, path)
     print("Path Length Response:", path_length_response)
