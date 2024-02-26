@@ -1,45 +1,29 @@
-import json
-from wsgiref import headers
-
-from flask import Flask, request, jsonify
 import requests
-from urllib3.util import url
-
-BASE_URL = "http://localhost:5000"
 
 
-def set_grid(rows, columns):
-    url = f"{BASE_URL}/set_grid"
-    data = {"rows": rows, "columns": columns}
-    response = requests.post(url, json=data)
-    print(response.json())
+def set_grid(base_url, grid_size):
+    """Sends a POST request to set the grid size."""
+    url = f"{base_url}/set_grid"
+    response = requests.post(url, json=grid_size)
+    return response.json()
 
 
-def calculate_path_length(path):
-    url = f"{BASE_URL}/calculate_path_length"
-    data = {"path": path}
-    response = requests.post(url, json=data)
-    print(response.json())
+def calculate_path_length(base_url, path):
+    """Sends a POST request to calculate the length of a path."""
+    url = f"{base_url}/calculate_length"
+    response = requests.post(url, json={"path": path})
+    return response.json()
 
 
 if __name__ == "__main__":
-    # take in grid size, rows x columns
-    set_grid(5, 5)
+    base_url = 'http://127.0.0.1:5000'  # Adjust if your Flask app is running on a different URL/port
+    grid_size = {"rows": 5, "columns": 5}
+    path = [[0, 0], [1, 1], [2, 2]]
 
-    # simple coordinate path
-    path = [[0, 0], [1, 2], [2, 3]]
+    # Set grid size
+    grid_response = set_grid(base_url, grid_size)
+    print("Grid Response:", grid_response)
 
-    # calculate and return path length
-    calculate_path_length(path)
-
-    # DEBUG PRINT ---------------------------------
-    response = requests.post(url, json={'path': path}, headers=headers)
-    print(f"Status Code: {response.status_code}, Response Text: '{response.text}'")
-    if response.status_code == 200:
-        try:
-            print(response.json())
-        except json.decoder.JSONDecodeError as e:
-            print(f"Error decoding JSON: {e}")
-    else:
-        print("Request failed.")
-    # ---------------------------------------------
+    # Calculate path length
+    path_length_response = calculate_path_length(base_url, path)
+    print("Path Length Response:", path_length_response)
