@@ -1,4 +1,9 @@
+import json
+from wsgiref import headers
+
+from flask import Flask, request, jsonify
 import requests
+from urllib3.util import url
 
 BASE_URL = "http://localhost:5000"
 
@@ -26,3 +31,15 @@ if __name__ == "__main__":
 
     # calculate and return path length
     calculate_path_length(path)
+
+    # DEBUG PRINT ---------------------------------
+    response = requests.post(url, json={'path': path}, headers=headers)
+    print(f"Status Code: {response.status_code}, Response Text: '{response.text}'")
+    if response.status_code == 200:
+        try:
+            print(response.json())
+        except json.decoder.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+    else:
+        print("Request failed.")
+    # ---------------------------------------------
